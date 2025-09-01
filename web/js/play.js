@@ -1,5 +1,20 @@
 // play.js — Ada’s Chat UI + Avatar Initialization + Quick Helpers
 
+// ----- API base (works on Android WebView + browser) -----
+const SITE_URL = "https://adaskids.ai"; // <-- paste YOUR domain here exactly
+const IS_CAPACITOR =
+  location.protocol === "capacitor:" || location.origin.startsWith("file:");
+const IS_LOCALHOST =
+  location.hostname === "localhost" || location.hostname === "127.0.0.1";
+
+// In Android (file://), call your real domain. In local dev, call netlify dev (8888).
+// On the deployed website, leave it empty so relative paths work.
+const AK_API_BASE = IS_CAPACITOR
+  ? SITE_URL
+  : IS_LOCALHOST
+  ? "http://localhost:8888"
+  : "";
+
 // ===== 0) Small i18n helper (EN/ES) =====
 function getLang() {
   const lang = new URLSearchParams(window.location.search).get("language");
@@ -211,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const systemMessage = systemOverride || getSystemMessage(rawAvatar);
     try {
-      const res = await fetch("/.netlify/functions/chat-ada", {
+      const res = await fetch(`${AK_API_BASE}/.netlify/functions/chat-ada`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, system: systemMessage }),
@@ -268,9 +283,8 @@ document.addEventListener("DOMContentLoaded", () => {
   btnExplain?.addEventListener("click", () => {
     const subj = subjectFromContext();
     const prompt = T.qaExplainSent(subj);
-    // If there is only typed text (no previous message), combine it nicely:
     const typed = (input && input.value.trim()) || "";
-    if (typed) input.value = ""; // clear input if we consume it
+    if (typed) input.value = "";
     sendToAda(typed ? `${typed}\n\n${prompt}` : prompt);
   });
 

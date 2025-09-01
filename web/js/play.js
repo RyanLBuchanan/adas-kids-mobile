@@ -1,15 +1,19 @@
-// play.js — Ada’s Chat UI + Avatar Initialization + Quick Helpers
+// ----- API base (Android WebView + browser) -----
+const SITE_URL = "https://adaskids.ai"; // your live site
 
-// ----- API base (works on Android WebView + browser) -----
-const SITE_URL = "https://adaskids.ai"; // <-- paste YOUR domain here exactly
-const IS_CAPACITOR =
-  location.protocol === "capacitor:" || location.origin.startsWith("file:");
+// Capacitor/Android WebView exposes window.Capacitor and serves from http://localhost
+const IS_NATIVE =
+  typeof window !== "undefined" &&
+  typeof window.Capacitor !== "undefined" &&
+  typeof window.Capacitor.getPlatform === "function" &&
+  window.Capacitor.getPlatform() !== "web";
+
 const IS_LOCALHOST =
   location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
-// In Android (file://), call your real domain. In local dev, call netlify dev (8888).
-// On the deployed website, leave it empty so relative paths work.
-const AK_API_BASE = IS_CAPACITOR
+// In native (Android/iOS), call your live site. In local dev, call Netlify Dev (8888).
+// On the deployed website, leave empty so relative paths work.
+const AK_API_BASE = IS_NATIVE
   ? SITE_URL
   : IS_LOCALHOST
   ? "http://localhost:8888"

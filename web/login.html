@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="loginTitle">Log In · Ada’s Kids</title>
+    <link rel="icon" href="/assets/adas-kids-logo.png" />
+
+    <!-- Tailwind v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "app-primary": { 400: "#5BB0FF", 600: "#1B8AEE" },
+              "app-secondary": { 400: "#A794FF", 600: "#7A5CFF" },
+              "app-danger": { 400: "#FF7A7A", 600: "#D33E3E" },
+              ink: "#0F172A",
+            },
+            fontFamily: {
+              display: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+              body: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+            },
+            boxShadow: { soft: "0 10px 30px rgba(20,20,50,.10)" },
+            backgroundImage: {
+              kid: "radial-gradient(1200px 400px at 10% -10%, #fffbe7 10%, rgba(255,255,255,0) 60%), radial-gradient(900px 500px at 110% -20%, #e9f6ff 10%, rgba(255,255,255,0) 60%), linear-gradient(135deg, #ffffff 0%, #f7f8fb 100%)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .glass {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.85);
+      }
+      .tap {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      .focus-ring:focus {
+        outline: 3px solid #1b8aee;
+        outline-offset: 3px;
+        box-shadow: 0 0 0 4px rgba(27, 138, 238, 0.15);
+      }
+    </style>
+  </head>
+
+  <body class="font-body text-ink bg-kid min-h-screen">
+    <!-- Top bar -->
+    <header class="fixed top-0 inset-x-0 z-50">
+      <nav class="mx-auto max-w-7xl px-4">
+        <div
+          class="mt-3 mb-2 flex items-center justify-between rounded-2xl glass shadow-soft px-4 py-2 ring-1 ring-zinc-200"
+        >
+          <a href="index.html" class="flex items-center gap-3">
+            <img
+              src="/assets/adas-kids-logo.png"
+              alt="Ada’s Kids"
+              class="h-9 w-9 rounded-xl"
+            />
+            <span class="font-display font-bold text-lg tracking-wide"
+              >Ada’s Kids</span
+            >
+          </a>
+          <div class="hidden md:flex items-center gap-3">
+            <a
+              href="index.html"
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              data-i18n="nav_home"
+              >Home</a
+            >
+            <a
+              href="avatar.html"
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              data-i18n="nav_talk"
+              >Talk to Ada</a
+            >
+            <select
+              id="lang-select"
+              class="ml-1 rounded-xl px-3 py-1 ring-1 ring-zinc-300 bg-white"
+              aria-label="Language"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+            <a
+              href="login.html"
+              class="ml-1 inline-flex items-center gap-2 rounded-full bg-app-primary-600 hover:bg-app-primary-400 text-white px-4 py-2 shadow-soft tap"
+              data-i18n="login"
+              >Log In</a
+            >
+          </div>
+          <button
+            id="menuBtn"
+            class="md:hidden text-2xl tap"
+            aria-label="Open menu"
+          >
+            ☰
+          </button>
+        </div>
+      </nav>
+
+      <!-- mobile -->
+      <div
+        id="mobileMenu"
+        class="md:hidden hidden mx-4 rounded-2xl glass shadow-soft px-4 py-3"
+      >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="index.html"
+          data-i18n="nav_home"
+          >Home</a
+        >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="avatar.html"
+          data-i18n="nav_talk"
+          >Talk to Ada</a
+        >
+        <div class="mt-2 flex items-center gap-2">
+          <select
+            id="lang-select-mobile"
+            class="flex-1 rounded-xl px-3 py-2 ring-1 ring-zinc-300 bg-white"
+          >
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+          </select>
+          <a
+            href="login.html"
+            class="flex-1 rounded-xl bg-app-primary-600 hover:bg-app-primary-400 text-white text-center px-3 py-2"
+            data-i18n="login"
+            >Log In</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-28">
+      <section class="mx-auto max-w-7xl px-4 py-10">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <!-- Left: Login/Register -->
+          <div>
+            <div
+              id="loginPanel"
+              class="rounded-3xl glass ring-1 ring-zinc-200 shadow-soft p-6 md:p-8"
+            >
+              <div class="flex items-center gap-3">
+                <img
+                  src="/assets/adas-kids-logo.png"
+                  alt="Ada’s Kids"
+                  class="h-10 w-10 rounded-xl"
+                />
+                <div>
+                  <h1
+                    class="font-display text-2xl font-extrabold"
+                    data-i18n="welcomeBack"
+                  >
+                    Welcome back!
+                  </h1>
+                  <p class="text-zinc-600" data-i18n="loginDesc">
+                    Sign in to continue your learning journey.
+                  </p>
+                </div>
+              </div>
+
+              <form id="loginForm" class="mt-6 space-y-4" autocomplete="off">
+                <div>
+                  <label
+                    for="email"
+                    class="block text-sm font-medium"
+                    data-i18n="emailLabel"
+                    >Email</label
+                  >
+                  <input
+                    id="email"
+                    name="email"
+                    type="text"
+                    required
+                    class="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus-ring"
+                    data-i18n-ph="emailPlaceholder"
+                    placeholder="you@example.com"
+                  />
+                  <span
+                    id="emailError"
+                    class="text-app-danger-600 text-sm hidden"
+                    data-i18n="emailError"
+                    >Please enter a valid email or username.</span
+                  >
+                </div>
+                <div>
+                  <label
+                    for="password"
+                    class="block text-sm font-medium"
+                    data-i18n="passwordLabel"
+                    >Password</label
+                  >
+                  <div class="mt-1 relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      required
+                      class="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 pr-16 focus-ring"
+                      data-i18n-ph="passwordPlaceholder"
+                      placeholder="Your password"
+                    />
+                    <button
+                      type="button"
+                      id="togglePw"
+                      class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-sm rounded-lg ring-1 ring-zinc-300 bg-white hover:bg-zinc-50 tap"
+                      data-state="hidden"
+                      data-i18n="show"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <span
+                    id="pwError"
+                    class="text-app-danger-600 text-sm hidden"
+                    data-i18n="pwError"
+                    >Password must be at least 6 characters.</span
+                  >
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full tap rounded-2xl bg-app-primary-600 hover:bg-app-primary-400 text-white font-bold py-3 shadow-soft"
+                  data-i18n="login"
+                >
+                  Log In
+                </button>
+
+                <div class="flex items-center gap-2">
+                  <div class="h-px bg-zinc-200 flex-1"></div>
+                  <span class="text-zinc-500 text-xs" data-i18n="or">or</span>
+                  <div class="h-px bg-zinc-200 flex-1"></div>
+                </div>
+
+                <a
+                  href="avatar.html"
+                  id="kidModeLink"
+                  class="w-full tap inline-flex items-center justify-center gap-2 rounded-2xl bg-app-secondary-600 hover:bg-app-secondary-400 text-white font-semibold py-3 shadow-soft"
+                  aria-label="Try Kid Mode (no account)"
+                  data-i18n="tryKidMode"
+                  >🌟 Try Kid Mode (no account)</a
+                >
+              </form>
+
+              <div class="text-center mt-6 text-sm">
+                <span data-i18n="noAccount">Don’t have an account?</span>
+                <button
+                  onclick="showRegister()"
+                  class="font-bold underline ml-1 tap"
+                  data-i18n="createOne"
+                >
+                  Create one
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="registerPanel"
+              class="hidden rounded-3xl glass ring-1 ring-zinc-200 shadow-soft p-6 md:p-8"
+            >
+              <div class="flex items-center gap-3">
+                <img
+                  src="/assets/adas-kids-logo.png"
+                  alt="Ada’s Kids"
+                  class="h-10 w-10 rounded-xl"
+                />
+                <div>
+                  <h2
+                    class="font-display text-2xl font-extrabold"
+                    data-i18n="createAccount"
+                  >
+                    Create your account
+                  </h2>
+                  <p class="text-zinc-600" data-i18n="registerDesc">
+                    A few details and you’re in.
+                  </p>
+                </div>
+              </div>
+
+              <form id="registerForm" class="mt-6 space-y-4" autocomplete="off">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      for="firstName"
+                      class="block text-sm font-medium"
+                      data-i18n="firstNameLabel"
+                      >First name</label
+                    >
+                    <input
+                      id="firstName"
+                      required
+                      class="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus-ring"
+                      data-i18n-ph="firstNamePlaceholder"
+                      placeholder="Ada"
+                    />
+                    <span
+                      id="firstNameError"
+                      class="text-app-danger-600 text-sm hidden"
+                      data-i18n="firstNameError"
+                      >Please enter your first name.</span
+                    >
+                  </div>
+                  <div>
+                    <label
+                      for="lastName"
+                      class="block text-sm font-medium"
+                      data-i18n="lastNameLabel"
+                      >Last name</label
+                    >
+                    <input
+                      id="lastName"
+                      required
+                      class="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus-ring"
+                      data-i18n-ph="lastNamePlaceholder"
+                      placeholder="Lovelace"
+                    />
+                    <span
+                      id="lastNameError"
+                      class="text-app-danger-600 text-sm hidden"
+                      data-i18n="lastNameError"
+                      >Please enter your last name.</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <label
+                    for="regEmail"
+                    class="block text-sm font-medium"
+                    data-i18n="emailLabel"
+                    >Email</label
+                  >
+                  <input
+                    id="regEmail"
+                    type="text"
+                    required
+                    class="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus-ring"
+                    data-i18n-ph="emailPlaceholder"
+                    placeholder="you@example.com"
+                  />
+                  <span
+                    id="regEmailError"
+                    class="text-app-danger-600 text-sm hidden"
+                    data-i18n="emailError"
+                    >Please enter a valid email or username.</span
+                  >
+                </div>
+                <div>
+                  <label
+                    for="regPassword"
+                    class="block text-sm font-medium"
+                    data-i18n="passwordLabel"
+                    >Password</label
+                  >
+                  <div class="mt-1 relative">
+                    <input
+                      id="regPassword"
+                      type="password"
+                      required
+                      class="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 pr-16 focus-ring"
+                      data-i18n-ph="passwordPlaceholder"
+                      placeholder="Your password"
+                    />
+                    <button
+                      type="button"
+                      id="toggleRegPw"
+                      class="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-sm rounded-lg ring-1 ring-zinc-300 bg-white hover:bg-zinc-50 tap"
+                      data-state="hidden"
+                      data-i18n="show"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <span
+                    id="regPwError"
+                    class="text-app-danger-600 text-sm hidden"
+                    data-i18n="pwError"
+                    >Password must be at least 6 characters.</span
+                  >
+                </div>
+                <div>
+                  <label
+                    for="confirmPassword"
+                    class="block text-sm font-medium"
+                    data-i18n="confirmPasswordLabel"
+                    >Confirm password</label
+                  >
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    required
+                    class="mt-1 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 focus-ring"
+                    data-i18n-ph="passwordPlaceholder"
+                    placeholder="Your password"
+                  />
+                  <span
+                    id="confirmPasswordError"
+                    class="text-app-danger-600 text-sm hidden"
+                    data-i18n="confirmPasswordError"
+                    >Passwords must match.</span
+                  >
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full tap rounded-2xl bg-app-secondary-600 hover:bg-app-secondary-400 text-white font-bold py-3 shadow-soft"
+                  data-i18n="registerBtn"
+                >
+                  Create Account
+                </button>
+
+                <div class="text-center mt-6 text-sm">
+                  <span data-i18n="haveAccount">Already have an account?</span>
+                  <button
+                    onclick="showLogin()"
+                    class="font-bold underline ml-1 tap"
+                    data-i18n="login"
+                  >
+                    Log In
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Right: Illustration -->
+          <div class="hidden md:block">
+            <div
+              class="relative rounded-3xl overflow-hidden shadow-soft ring-1 ring-zinc-200 bg-white"
+            >
+              <img
+                src="/assets/AdasKids-Branding.png"
+                alt="Happy kids learning with Ada’s Kids"
+                class="w-full h-auto"
+              />
+              <div
+                class="absolute inset-x-4 bottom-4 flex items-center gap-3 rounded-2xl glass px-4 py-3 shadow-soft ring-1 ring-zinc-200"
+              >
+                <div class="text-xl">✨</div>
+                <p class="text-sm" data-i18n="hero_caption">
+                  Ada makes learning joyful and personal — pick a learning buddy
+                  and start exploring!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-zinc-200 bg-white/80">
+      <div
+        class="mx-auto max-w-7xl px-4 py-8 text-center text-sm text-zinc-600"
+      >
+        <div class="flex flex-wrap justify-center gap-4 mb-2">
+          <a
+            href="privacy.html"
+            class="underline hover:text-zinc-800"
+            data-i18n="privacy"
+            >Privacy</a
+          >
+          <a
+            href="terms.html"
+            class="underline hover:text-zinc-800"
+            data-i18n="terms"
+            >Terms</a
+          >
+          <a
+            href="acceptable-use.html"
+            class="underline hover:text-zinc-800"
+            data-i18n="acceptableUse"
+            >Acceptable Use</a
+          >
+          <a
+            href="cookie-preferences.html"
+            class="underline hover:text-zinc-800"
+            data-i18n="cookie"
+            >Cookie Preferences</a
+          >
+          <a
+            href="security.html"
+            class="underline hover:text-zinc-800"
+            data-i18n="security"
+            >Security</a
+          >
+        </div>
+        <span data-i18n="footer"
+          >© 2025 Ada’s Kids · “Every child deserves a teacher who never gets
+          tired of their questions.”</span
+        >
+      </div>
+    </footer>
+
+    <!-- i18n + behavior -->
+    <script>
+      const dict = {
+        en: {
+          loginTitle: "Log In · Ada’s Kids",
+          nav_home: "Home",
+          nav_talk: "Talk to Ada",
+          login: "Log In",
+          welcomeBack: "Welcome back!",
+          loginDesc: "Sign in to continue your learning journey.",
+          emailLabel: "Email or username",
+          emailPlaceholder: "you@example.com",
+          emailError: "Please enter a valid email or username.",
+          passwordLabel: "Password",
+          passwordPlaceholder: "Your password",
+          pwError: "Password must be at least 6 characters.",
+          confirmPasswordLabel: "Confirm password",
+          confirmPasswordError: "Passwords must match.",
+          show: "Show",
+          hide: "Hide",
+          or: "or",
+          tryKidMode: "🌟 Try Kid Mode (no account)",
+          noAccount: "Don’t have an account?",
+          createOne: "Create one",
+          createAccount: "Create your account",
+          registerDesc: "A few details and you’re in.",
+          firstNameLabel: "First name",
+          firstNamePlaceholder: "Ada",
+          firstNameError: "Please enter your first name.",
+          lastNameLabel: "Last name",
+          lastNamePlaceholder: "Lovelace",
+          lastNameError: "Please enter your last name.",
+          registerBtn: "Create Account",
+          haveAccount: "Already have an account?",
+          hero_caption:
+            "Ada makes learning joyful and personal — pick a learning buddy and start exploring!",
+          privacy: "Privacy",
+          terms: "Terms",
+          acceptableUse: "Acceptable Use",
+          cookie: "Cookie Preferences",
+          security: "Security",
+          footer:
+            "© 2025 Ada’s Kids · “Every child deserves a teacher who never gets tired of their questions.”",
+          made: "Made with love and imagination.",
+        },
+        es: {
+          loginTitle: "Iniciar sesión · Ada’s Kids",
+          nav_home: "Inicio",
+          nav_talk: "Habla con Ada",
+          login: "Iniciar sesión",
+          welcomeBack: "¡Hola de nuevo!",
+          loginDesc: "Ingresa para continuar tu aprendizaje.",
+          emailLabel: "Correo o usuario",
+          emailPlaceholder: "tú@ejemplo.com",
+          emailError: "Ingresa un correo o usuario válido.",
+          passwordLabel: "Contraseña",
+          passwordPlaceholder: "Tu contraseña",
+          pwError: "La contraseña debe tener al menos 6 caracteres.",
+          confirmPasswordLabel: "Confirmar contraseña",
+          confirmPasswordError: "Las contraseñas deben coincidir.",
+          show: "Mostrar",
+          hide: "Ocultar",
+          or: "o",
+          tryKidMode: "🌟 Probar Modo Infantil (sin cuenta)",
+          noAccount: "¿No tienes cuenta?",
+          createOne: "Crear una",
+          createAccount: "Crea tu cuenta",
+          registerDesc: "Solo unos datos y listo.",
+          firstNameLabel: "Nombre",
+          firstNamePlaceholder: "Ada",
+          firstNameError: "Escribe tu nombre.",
+          lastNameLabel: "Apellido",
+          lastNamePlaceholder: "Lovelace",
+          lastNameError: "Escribe tu apellido.",
+          registerBtn: "Crear cuenta",
+          haveAccount: "¿Ya tienes cuenta?",
+          hero_caption:
+            "Ada hace que aprender sea alegre y personal — ¡elige un compañero y empecemos!",
+          privacy: "Privacidad",
+          terms: "Términos",
+          acceptableUse: "Uso aceptable",
+          cookie: "Preferencias de cookies",
+          security: "Seguridad",
+          footer:
+            "© 2025 Ada’s Kids · “Cada niño merece una maestra que nunca se canse de sus preguntas.”",
+          made: "Hecho con amor e imaginación.",
+        },
+      };
+
+      let strings = dict.en;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // mobile menu
+        document.getElementById("menuBtn")?.addEventListener("click", () => {
+          document.getElementById("mobileMenu")?.classList.toggle("hidden");
+        });
+
+        // panels
+        const loginPanel = document.getElementById("loginPanel");
+        const registerPanel = document.getElementById("registerPanel");
+        window.showRegister = () => {
+          loginPanel.classList.add("hidden");
+          registerPanel.classList.remove("hidden");
+        };
+        window.showLogin = () => {
+          registerPanel.classList.add("hidden");
+          loginPanel.classList.remove("hidden");
+        };
+
+        // toggles
+        hookToggle("togglePw", "password");
+        hookToggle("toggleRegPw", "regPassword");
+
+        // i18n
+        const saved = localStorage.getItem("ak_lang") || "en";
+        applyLang(saved);
+        document
+          .getElementById("lang-select")
+          ?.addEventListener("change", onLang);
+        document
+          .getElementById("lang-select-mobile")
+          ?.addEventListener("change", onLang);
+
+        // forms (very light checks; then navigate)
+        document
+          .getElementById("loginForm")
+          ?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const pw = document.getElementById("password").value;
+            const okEmail = email.length >= 2; // allow username for now
+            const okPw = pw.length >= 6;
+            document
+              .getElementById("emailError")
+              .classList.toggle("hidden", okEmail);
+            document.getElementById("pwError").classList.toggle("hidden", okPw);
+            if (!(okEmail && okPw)) return;
+            location.href = "avatar.html";
+          });
+
+        document
+          .getElementById("registerForm")
+          ?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const okFirst = !!document.getElementById("firstName").value.trim();
+            const okLast = !!document.getElementById("lastName").value.trim();
+            const okEmail =
+              document.getElementById("regEmail").value.trim().length >= 2;
+            const pw = document.getElementById("regPassword").value;
+            const cpw = document.getElementById("confirmPassword").value;
+            const okPw = pw.length >= 6;
+            const okMatch = pw === cpw;
+
+            document
+              .getElementById("firstNameError")
+              .classList.toggle("hidden", okFirst);
+            document
+              .getElementById("lastNameError")
+              .classList.toggle("hidden", okLast);
+            document
+              .getElementById("regEmailError")
+              .classList.toggle("hidden", okEmail);
+            document
+              .getElementById("regPwError")
+              .classList.toggle("hidden", okPw);
+            document
+              .getElementById("confirmPasswordError")
+              .classList.toggle("hidden", okMatch);
+
+            if (!(okFirst && okLast && okEmail && okPw && okMatch)) return;
+            alert(
+              strings.login === "Iniciar sesión"
+                ? "¡Cuenta creada! Vamos a elegir un compañero."
+                : "Account created! Let’s pick a learning buddy."
+            );
+            location.href = "avatar.html";
+          });
+      });
+
+      // —— helpers ——
+      function hookToggle(btnId, inputId) {
+        const btn = document.getElementById(btnId);
+        const input = document.getElementById(inputId);
+        if (!btn || !input) return;
+        const updateLabel = () => {
+          const isHidden = input.type === "password";
+          btn.textContent = isHidden ? strings.show : strings.hide;
+          btn.setAttribute("data-state", isHidden ? "hidden" : "visible");
+        };
+        updateLabel();
+        btn.addEventListener("click", () => {
+          input.type = input.type === "password" ? "text" : "password";
+          updateLabel();
+          input.focus();
+        });
+      }
+
+      function onLang(e) {
+        const lang = e.target.value;
+        localStorage.setItem("ak_lang", lang);
+        applyLang(lang);
+        const twin =
+          e.target.id === "lang-select" ? "lang-select-mobile" : "lang-select";
+        document.getElementById(twin) &&
+          (document.getElementById(twin).value = lang);
+      }
+
+      function applyLang(lang) {
+        strings = dict[lang] || dict.en;
+        document.documentElement.lang = lang;
+        document.title = strings.loginTitle;
+
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (strings[key] != null) el.textContent = strings[key];
+        });
+        document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+          const key = el.getAttribute("data-i18n-ph");
+          if (strings[key] != null) el.placeholder = strings[key];
+        });
+
+        // sync selects
+        const s1 = document.getElementById("lang-select");
+        const s2 = document.getElementById("lang-select-mobile");
+        if (s1) s1.value = lang;
+        if (s2) s2.value = lang;
+
+        // refresh toggle button labels in the new language
+        document.getElementById("togglePw") &&
+          hookToggle("togglePw", "password");
+        document.getElementById("toggleRegPw") &&
+          hookToggle("toggleRegPw", "regPassword");
+
+        // Kid link aria
+        const kid = document.getElementById("kidModeLink");
+        if (kid)
+          kid.setAttribute(
+            "aria-label",
+            (strings.tryKidMode || "").replace("🌟 ", "")
+          );
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# Capacitor / Web build artifacts
+dist/
+build/
+.web/
+.netlify/
+
+# Android/Gradle
+android/.gradle/
+android/.idea/
+android/local.properties
+android/*.iml
+*.iml
+.gradle/
+.idea/
+captures/
+*.apk
+*.keystore
+
+# Android build outputs
+android/app/build/
+android/build/
+
+# iOS (when you add it later)
+ios/App/Pods/
+ios/App/build/
+ios/**/DerivedData/
+ios/**/xcuserdata/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Env/config
+.env
+.env.*

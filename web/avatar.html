@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Your Buddy · Ada's Kids</title>
+    <meta
+      name="description"
+      content="Pick a friendly learning buddy for your Ada's Kids session."
+    />
+    <link rel="icon" href="/assets/favicon.ico" />
+
+    <!-- Tailwind v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f1fff9",
+                100: "#e6fff4",
+                200: "#c9ffe6",
+                300: "#9df7d7",
+                400: "#63e6be",
+                500: "#34d399",
+                600: "#10b981",
+                700: "#0ea370",
+                800: "#047857",
+                900: "#065f46",
+              },
+              accent: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                200: "#c7d2fe",
+                300: "#a5b4fc",
+                400: "#818cf8",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                800: "#3730a3",
+                900: "#312e81",
+              },
+              neutral: {
+                50: "#f8fafc",
+                100: "#f1f5f9",
+                200: "#e2e8f0",
+                300: "#cbd5e1",
+                400: "#94a3b8",
+                500: "#64748b",
+                600: "#475569",
+                700: "#334155",
+                800: "#1e293b",
+                900: "#0f172a",
+              },
+            },
+            fontFamily: {
+              display: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+              body: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(20,20,50,.08)",
+              lift: "0 8px 20px rgba(20,20,50,.06)",
+            },
+            backgroundImage: {
+              hero: "radial-gradient(1200px 400px at 10% -10%, #fffbe7 10%, rgba(255,255,255,0) 60%), radial-gradient(1000px 500px at 110% -20%, #eef2ff 10%, rgba(255,255,255,0) 60%), linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .glass {
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.78);
+      }
+      .card {
+        transition: transform 0.15s ease, box-shadow 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .card:focus-visible {
+        outline: 3px solid #6366f1;
+        outline-offset: 2px;
+      }
+      .card[data-selected="true"] {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+      }
+      .avatar-img {
+        transition: transform 0.15s ease;
+      }
+      .card[data-selected="true"] .avatar-img {
+        transform: scale(1.04);
+      }
+      .btn-primary {
+        background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+      }
+      .btn-primary:hover {
+        filter: brightness(1.03);
+      }
+      .btn-soft {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+      }
+      .bg-hero {
+        background: radial-gradient(
+            1200px 400px at 10% -10%,
+            #fffbe7 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          radial-gradient(
+            1000px 500px at 110% -20%,
+            #eef2ff 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+      }
+    </style>
+  </head>
+
+  <body class="font-body text-neutral-900 bg-hero">
+    <!-- Top bar -->
+    <header class="fixed top-0 inset-x-0 z-50">
+      <nav class="mx-auto max-w-7xl px-4">
+        <div
+          class="mt-3 mb-2 flex items-center justify-between rounded-2xl glass shadow-soft px-4 py-2 ring-1 ring-neutral-200"
+        >
+          <a href="/index.html" class="flex items-center gap-3">
+            <img
+              src="/assets/adas-kids-logo.png"
+              alt="Ada's Kids Logo"
+              class="h-9 w-9 rounded-xl"
+            />
+            <span class="font-display font-bold text-lg tracking-wide"
+              >Ada's Kids</span
+            >
+          </a>
+
+          <div class="flex items-center gap-3">
+            <a
+              href="/index.html"
+              class="px-3 py-1 rounded-xl hover:bg-neutral-100 font-semibold"
+              data-i18n="nav_home"
+              >Home</a
+            >
+            <a
+              href="/login.html"
+              class="px-3 py-1 rounded-xl hover:bg-neutral-100 font-semibold"
+              data-i18n="nav_login"
+              >Log In</a
+            >
+
+            <!-- Language -->
+            <select
+              id="langSelect"
+              class="ml-1 rounded-xl px-3 py-1 ring-1 ring-neutral-300 bg-white"
+              aria-label="Language"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="pt-28 pb-20">
+      <section class="mx-auto max-w-6xl px-4">
+        <div class="text-center max-w-3xl mx-auto">
+          <h1
+            class="font-display text-3xl md:text-4xl font-extrabold leading-tight tracking-tight"
+            data-i18n="title"
+          >
+            Choose Your Buddy
+          </h1>
+          <p class="mt-3 text-lg opacity-90" data-i18n="subtitle">
+            Pick a friendly guide for today’s session. You can change later
+            anytime.
+          </p>
+        </div>
+
+        <!-- Buddy Picker -->
+        <div class="mt-8" role="radiogroup" aria-labelledby="buddyGroupLabel">
+          <h2 id="buddyGroupLabel" class="sr-only">Buddy choices</h2>
+
+          <div id="avatarGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards injected by JS -->
+          </div>
+
+          <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <a
+              href="/index.html"
+              class="btn-soft inline-flex items-center gap-2 rounded-xl px-4 py-3 shadow-soft hover:bg-neutral-50 font-semibold"
+            >
+              ← <span data-i18n="back">Back</span>
+            </a>
+            <button
+              id="continueBtn"
+              disabled
+              class="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-white font-bold shadow-lift btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              data-i18n="continue"
+            >
+              Continue →
+            </button>
+          </div>
+
+          <div id="live" class="sr-only" aria-live="polite"></div>
+        </div>
+
+        <!-- Tips -->
+        <div class="mt-10 grid md:grid-cols-3 gap-4">
+          <div class="rounded-2xl glass p-4 ring-1 ring-neutral-200">
+            <div class="text-2xl">🧩</div>
+            <div class="mt-2 font-semibold" data-i18n="tip_choice_title">
+              Any choice works
+            </div>
+            <p class="text-sm opacity-80" data-i18n="tip_choice_body">
+              All buddies tutor the same topics—just in different styles.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-4 ring-1 ring-neutral-200">
+            <div class="text-2xl">🎯</div>
+            <div class="mt-2 font-semibold" data-i18n="tip_personal_title">
+              Personalized tone
+            </div>
+            <p class="text-sm opacity-80" data-i18n="tip_personal_body">
+              We match encouragement & pacing to your vibe.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-4 ring-1 ring-neutral-200">
+            <div class="text-2xl">🔁</div>
+            <div class="mt-2 font-semibold" data-i18n="tip_change_title">
+              Change anytime
+            </div>
+            <p class="text-sm opacity-80" data-i18n="tip_change_body">
+              You can switch buddies later from settings.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-neutral-200 bg-white/80">
+      <div class="mx-auto max-w-7xl px-4 py-8 text-center text-sm">
+        <p>&copy; 2025 Ada's Kids.</p>
+      </div>
+    </footer>
+
+    <script>
+      // --- i18n (EN/ES) ---
+      const dict = {
+        en: {
+          nav_home: "Home",
+          nav_login: "Log In",
+          title: "Choose Your Buddy",
+          subtitle:
+            "Pick a friendly guide for today’s session. You can change later anytime.",
+          continue: "Continue →",
+          back: "Back",
+          selected_live: (name) => `${name} selected.`,
+          tip_choice_title: "Any choice works",
+          tip_choice_body:
+            "All buddies tutor the same topics—just in different styles.",
+          tip_personal_title: "Personalized tone",
+          tip_personal_body: "We match encouragement & pacing to your vibe.",
+          tip_change_title: "Change anytime",
+          tip_change_body: "You can switch buddies later from settings.",
+          select_label: "Select buddy",
+        },
+        es: {
+          nav_home: "Inicio",
+          nav_login: "Iniciar sesión",
+          title: "Elige tu Compañero",
+          subtitle:
+            "Selecciona un amigo guía para tu sesión de hoy. Puedes cambiarlo cuando quieras.",
+          continue: "Continuar →",
+          back: "Atrás",
+          selected_live: (name) => `${name} seleccionado.`,
+          tip_choice_title: "Cualquier opción sirve",
+          tip_choice_body:
+            "Todos los compañeros enseñan lo mismo—solo con estilos diferentes.",
+          tip_personal_title: "Tono personalizado",
+          tip_personal_body: "Ajustamos el ánimo y el ritmo a tu estilo.",
+          tip_change_title: "Cámbialo cuando quieras",
+          tip_change_body: "Puedes cambiar de compañero más tarde en ajustes.",
+          select_label: "Elegir compañero",
+        },
+      };
+
+      function applyLang(lang) {
+        const strings = dict[lang] || dict.en;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          const val = strings[key];
+          if (!val) return;
+          el.innerHTML = typeof val === "function" ? val("") : val;
+        });
+        document.documentElement.lang = lang;
+        localStorage.setItem("ak_lang", lang);
+        // Re-render cards to update localized names/descriptions
+        renderCards();
+      }
+
+      const langSelect = document.getElementById("langSelect");
+      const savedLang = localStorage.getItem("ak_lang") || "en";
+      langSelect.value = savedLang;
+      document.addEventListener("DOMContentLoaded", () => applyLang(savedLang));
+      langSelect.addEventListener("change", (e) => applyLang(e.target.value));
+
+      // --- Buddy data (localized) ---
+      const buddies = [
+        {
+          id: "dino",
+          name: { en: "Dino", es: "Dino" },
+          tagline: {
+            en: "Roarsome & brave explorer",
+            es: "Explorador valiente y rugidor",
+          },
+          img: "/assets/avatars/dino.png",
+          bg: "bg-emerald-50",
+        },
+        {
+          id: "unicorn",
+          name: { en: "Sparkle Unicorn", es: "Unicornio Brillo" },
+          tagline: {
+            en: "Imagination power!",
+            es: "¡Poder de la imaginación!",
+          },
+          img: "/assets/avatars/unicorn.png",
+          bg: "bg-fuchsia-50",
+        },
+        {
+          id: "teddy",
+          name: { en: "Honey Teddy", es: "Osito Miel" },
+          tagline: {
+            en: "Cozy, kind, and calm",
+            es: "Acogedor, amable y tranquilo",
+          },
+          img: "/assets/avatars/teddy.png",
+          bg: "bg-amber-50",
+        },
+        {
+          id: "astronaut",
+          name: { en: "Astro Nova", es: "Astro Nova" },
+          tagline: {
+            en: "Space-smart and curious",
+            es: "Curioso y listo para el espacio",
+          },
+          img: "/assets/avatars/astronaut.png",
+          bg: "bg-sky-50",
+        },
+        {
+          id: "robot",
+          name: { en: "Pixel Robot", es: "Robot Pixel" },
+          tagline: { en: "Logic + laughs", es: "Lógica + risas" },
+          img: "/assets/avatars/robot.png",
+          bg: "bg-indigo-50",
+        },
+        {
+          id: "fox",
+          name: { en: "Rainbow Fox", es: "Zorrito Arcoíris" },
+          tagline: {
+            en: "Fast thinker, gentle coach",
+            es: "Pensador veloz, guía amable",
+          },
+          img: "/assets/avatars/fox.png",
+          bg: "bg-rose-50",
+        },
+        {
+          id: "panda",
+          name: { en: "Forest Panda", es: "Panda del Bosque" },
+          tagline: { en: "Patient, encouraging", es: "Paciente y motivador" },
+          img: "/assets/avatars/panda.png",
+          bg: "bg-lime-50",
+        },
+        {
+          id: "dolphin",
+          name: { en: "Ocean Dolphin", es: "Delfín Azul" },
+          tagline: {
+            en: "Playful problem-solver",
+            es: "Resolutor juguetón de problemas",
+          },
+          img: "/assets/avatars/dolphin.png",
+          bg: "bg-cyan-50",
+        },
+      ];
+
+      const grid = document.getElementById("avatarGrid");
+      const live = document.getElementById("live");
+      const continueBtn = document.getElementById("continueBtn");
+
+      const lang = () => localStorage.getItem("ak_lang") || "en";
+      let selectedId = localStorage.getItem("ak_avatar") || null;
+
+      function renderCards() {
+        if (!grid) return;
+        grid.innerHTML = "";
+        const currentLang = lang();
+
+        buddies.forEach((b, i) => {
+          const isSelected = selectedId === b.id;
+
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = `card text-left rounded-2xl ring-1 ring-neutral-200 ${b.bg} p-4 shadow-soft hover:shadow-lift focus:outline-none`;
+          card.setAttribute("role", "radio");
+          card.setAttribute("aria-checked", isSelected ? "true" : "false");
+          card.setAttribute("data-selected", isSelected ? "true" : "false");
+          card.setAttribute("data-id", b.id);
+          card.setAttribute("tabindex", "0");
+          const labelName = b.name[currentLang] || b.name.en;
+          card.setAttribute(
+            "aria-label",
+            `${labelName} — ${dict[currentLang].select_label}`
+          );
+
+          card.innerHTML = `
+            <div class="flex items-center gap-4">
+              <img src="${
+                b.img
+              }" alt="${labelName}" class="avatar-img w-16 h-16 rounded-2xl bg-white ring-1 ring-neutral-200 object-cover" />
+              <div class="min-w-0">
+                <div class="font-bold text-lg truncate">${labelName}</div>
+                <div class="text-sm opacity-80 truncate">${
+                  b.tagline[currentLang] || b.tagline.en
+                }</div>
+              </div>
+              <div class="ml-auto">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full ring-1 ring-neutral-200 bg-white">
+                  ${isSelected ? "⭐" : "🙂"}
+                </span>
+              </div>
+            </div>
+          `;
+
+          card.addEventListener("click", () => selectBuddy(b.id));
+          card.addEventListener("keydown", (e) => {
+            const idx = buddies.findIndex((bb) => bb.id === b.id);
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              selectBuddy(b.id, true);
+            } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+              e.preventDefault();
+              moveFocus(idx + 1);
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+              e.preventDefault();
+              moveFocus(idx - 1);
+            }
+          });
+
+          grid.appendChild(card);
+        });
+
+        updateContinue();
+      }
+
+      function selectBuddy(id, announce = false) {
+        selectedId = id;
+        localStorage.setItem("ak_avatar", id);
+        renderCards();
+        if (announce) {
+          const name =
+            buddies.find((b) => b.id === id)?.name[lang()] || "Buddy";
+          live.textContent = dict[lang()].selected_live(name);
+        }
+      }
+
+      function moveFocus(toIndex) {
+        const total = buddies.length;
+        const idx = ((toIndex % total) + total) % total;
+        const next = grid.querySelectorAll("[role='radio']")[idx];
+        next?.focus();
+      }
+
+      function updateContinue() {
+        continueBtn.disabled = !selectedId;
+      }
+
+      continueBtn.addEventListener("click", () => {
+        if (!selectedId) return;
+        const language = lang();
+        const profile = JSON.parse(localStorage.getItem("ak_profile") || "{}");
+        const name = encodeURIComponent(profile.name || "");
+        const url = `/play.html?avatar=${encodeURIComponent(
+          selectedId
+        )}&language=${encodeURIComponent(language)}${
+          name ? `&name=${name}` : ""
+        }`;
+        window.location.href = url;
+      });
+
+      // Initial render
+      renderCards();
+    </script>
+  </body>
+</html>

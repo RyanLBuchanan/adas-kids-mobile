@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talk to Ada · Ada’s Kids</title>
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+
+    <!-- Tailwind v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f1fff9",
+                100: "#e6fff4",
+                200: "#c9ffe6",
+                300: "#9df7d7",
+                400: "#63e6be",
+                500: "#34d399",
+                600: "#10b981",
+                700: "#0ea370",
+                800: "#047857",
+                900: "#065f46",
+              },
+              accent: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                200: "#c7d2fe",
+                300: "#a5b4fc",
+                400: "#818cf8",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                800: "#3730a3",
+                900: "#312e81",
+              },
+              neutral: {
+                50: "#f8fafc",
+                100: "#f1f5f9",
+                200: "#e2e8f0",
+                300: "#cbd5e1",
+                400: "#94a3b8",
+                500: "#64748b",
+                600: "#475569",
+                700: "#334155",
+                800: "#1e293b",
+                900: "#0f172a",
+              },
+            },
+            fontFamily: {
+              display: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+              body: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(20,20,50,.08)",
+              lift: "0 14px 30px rgba(20,20,50,.12)",
+              inset: "inset 0 2px 8px rgba(20,20,50,.06)",
+            },
+            backgroundImage: {
+              hero: "radial-gradient(1200px 400px at 10% -10%, #fffbe7 10%, rgba(255,255,255,0) 60%), radial-gradient(1000px 500px at 110% -20%, #eef2ff 10%, rgba(255,255,255,0) 60%), linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .glass {
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.78);
+      }
+      .btn-primary {
+        background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        filter: brightness(1.03);
+      }
+      .btn-soft {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+      }
+      .bubble {
+        background: #eef2ff;
+        border: 1px solid #e2e8f0;
+      }
+      .bg-hero {
+        background: radial-gradient(
+            1200px 400px at 10% -10%,
+            #fffbe7 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          radial-gradient(
+            1000px 500px at 110% -20%,
+            #eef2ff 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+      }
+    </style>
+  </head>
+
+  <body class="font-body text-neutral-900 bg-hero min-h-screen">
+    <!-- Top bar -->
+    <header class="fixed top-0 inset-x-0 z-50">
+      <nav class="mx-auto max-w-7xl px-4">
+        <div
+          class="mt-3 mb-2 flex items-center justify-between rounded-2xl glass shadow-soft px-4 py-2 ring-1 ring-neutral-200"
+        >
+          <a href="/index.html" class="flex items-center gap-3">
+            <img
+              src="/assets/adas-kids-logo.png"
+              alt="Ada's Kids Logo"
+              class="h-9 w-9 rounded-xl"
+            />
+            <span class="font-display font-bold text-lg tracking-wide"
+              >Ada's Kids</span
+            >
+          </a>
+          <div class="flex items-center gap-4">
+            <a
+              href="/index.html"
+              class="px-3 py-1 rounded-xl hover:bg-neutral-100 font-semibold"
+              data-i18n="home"
+              >Home</a
+            >
+            <a
+              href="/avatar.html"
+              class="px-3 py-1 rounded-xl hover:bg-neutral-100 font-semibold"
+              data-i18n="change_buddy"
+              >Change Buddy</a
+            >
+            <a
+              href="/problem.html"
+              class="px-3 py-1 rounded-xl hover:bg-neutral-100 font-semibold"
+              data-i18n="walkthrough"
+              >Problem Walkthrough</a
+            >
+            <select
+              id="langSelect"
+              class="rounded-xl px-3 py-1 ring-1 ring-neutral-300 bg-white"
+              aria-label="Language"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="pt-28 pb-20">
+      <div class="mx-auto max-w-6xl px-4 grid lg:grid-cols-[1.2fr_.8fr] gap-8">
+        <!-- Chat card -->
+        <section
+          class="rounded-3xl glass ring-1 ring-neutral-200 shadow-soft p-5 md:p-6"
+        >
+          <h1
+            id="personal-greeting"
+            class="font-display text-2xl md:text-3xl font-extrabold tracking-tight"
+          >
+            Hi, I’m Ada.
+          </h1>
+          <p id="tutor-style" class="mt-1 opacity-80">
+            Tutor Style: <span id="buddy-name-inline">Ada</span>
+            <span class="opacity-70"
+              >(<span id="buddy-tagline-inline">Empathetic & inspiring</span
+              >)</span
+            >
+          </p>
+
+          <div
+            id="chat-log"
+            class="mt-5 rounded-2xl bg-white/70 ring-1 ring-neutral-200 shadow-inset h-[420px] overflow-y-auto p-4"
+          >
+            <!-- First message is injected by script -->
+          </div>
+
+          <!-- Input row -->
+          <form id="ask-form" class="mt-4 flex items-center gap-2">
+            <button
+              type="button"
+              id="mic-btn"
+              class="btn-soft rounded-xl p-3 shadow-soft"
+              title="Start/Stop Listening"
+            >
+              🎤
+            </button>
+            <input
+              id="user-input"
+              type="text"
+              class="flex-1 rounded-xl ring-1 ring-neutral-300 px-4 py-3"
+              placeholder="Ask me anything..."
+              required
+            />
+            <button
+              type="button"
+              id="play-btn"
+              class="btn-soft rounded-xl p-3 shadow-soft"
+              title="Speak Last Response"
+            >
+              🔊
+            </button>
+            <button
+              type="submit"
+              class="btn-primary rounded-xl px-6 py-3 font-semibold shadow-lift"
+              data-i18n="send"
+            >
+              Send
+            </button>
+          </form>
+
+          <!-- Quick actions -->
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              class="btn-soft rounded-xl px-3 py-2 shadow-soft text-sm"
+              data-action="explain10"
+              data-i18n="chip_explain10"
+            >
+              Explain like I’m 10
+            </button>
+            <button
+              type="button"
+              class="btn-soft rounded-xl px-3 py-2 shadow-soft text-sm"
+              data-action="quiz"
+              data-i18n="chip_quiz"
+            >
+              Make a quick quiz
+            </button>
+            <button
+              type="button"
+              class="btn-soft rounded-xl px-3 py-2 shadow-soft text-sm"
+              data-action="diagram"
+              data-i18n="chip_diagram"
+            >
+              Draw a diagram
+            </button>
+            <button
+              type="button"
+              class="btn-soft rounded-xl px-3 py-2 shadow-soft text-sm"
+              data-action="funfact"
+              data-i18n="chip_funfact"
+            >
+              Tell a fun fact
+            </button>
+          </div>
+        </section>
+
+        <!-- Avatar card -->
+        <aside class="space-y-4">
+          <div
+            class="rounded-3xl glass ring-1 ring-neutral-200 shadow-soft p-5 text-center"
+          >
+            <img
+              id="avatar-image"
+              class="mx-auto h-40 w-40 rounded-2xl object-cover ring-1 ring-neutral-200 shadow-soft"
+              src="/assets/avatars/ada.png"
+              alt="Tutor avatar"
+            />
+            <div class="mt-3">
+              <div id="avatar-label" class="font-semibold">Ada</div>
+              <div id="avatar-persona" class="text-sm opacity-80">
+                Playful problem-solver
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="rounded-3xl glass ring-1 ring-neutral-200 shadow-soft p-5"
+          >
+            <h3 class="font-semibold" data-i18n="tips">Tips</h3>
+            <ul class="mt-2 space-y-2 text-sm opacity-90">
+              <li>
+                •
+                <span data-i18n="tip1"
+                  >Ask for steps, examples, or practice questions.</span
+                >
+              </li>
+              <li>
+                •
+                <span data-i18n="tip2"
+                  >Say “slower” or “harder” to change the pace.</span
+                >
+              </li>
+              <li>
+                •
+                <span data-i18n="tip3"
+                  >Switch buddies anytime for a new style.</span
+                >
+              </li>
+            </ul>
+
+            <a
+              id="changeBuddyLink"
+              href="/avatar.html"
+              class="mt-4 btn-soft w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 shadow-soft hover:bg-neutral-50 font-semibold"
+              data-i18n="change_buddy_btn"
+            >
+              Choose another buddy
+            </a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="border-t border-neutral-200 bg-white/80">
+      <div class="mx-auto max-w-7xl px-4 py-8 text-center text-sm">
+        <span>&copy; 2025 Ada's Kids</span>
+      </div>
+    </footer>
+
+    <!-- Your existing logic -->
+    <script src="js/play.js"></script>
+    <script src="js/voice.js"></script>
+
+    <!-- Buddy hydration (name/image/tagline + i18n) -->
+    <script>
+      // ---------- i18n ----------
+      const I18N = {
+        en: {
+          home: "Home",
+          change_buddy: "Change Buddy",
+          walkthrough: "Problem Walkthrough",
+          send: "Send",
+          tips: "Tips",
+          tip1: "Ask for steps, examples, or practice questions.",
+          tip2: "Say “slower” or “harder” to change the pace.",
+          tip3: "Switch buddies anytime for a new style.",
+          change_buddy_btn: "Choose another buddy",
+          greet: (name, buddy) => `Hi ${name}, I’m ${buddy}.`,
+          first_msg: (buddy) =>
+            `Hi! I’m ${buddy}. What would you like to learn today?`,
+          tutor_style: "Tutor Style:",
+          placeholder: "Ask me anything...",
+        },
+        es: {
+          home: "Inicio",
+          change_buddy: "Cambiar compañero",
+          walkthrough: "Recorrido de problemas",
+          send: "Enviar",
+          tips: "Consejos",
+          tip1: "Pide pasos, ejemplos o preguntas de práctica.",
+          tip2: "Di “más lento” o “más difícil” para cambiar el ritmo.",
+          tip3: "Cambia de compañero cuando quieras para un estilo nuevo.",
+          change_buddy_btn: "Elige otro compañero",
+          greet: (name, buddy) => `Hola ${name}, soy ${buddy}.`,
+          first_msg: (buddy) =>
+            `¡Hola! Soy ${buddy}. ¿Qué te gustaría aprender hoy?`,
+          tutor_style: "Estilo del tutor:",
+          placeholder: "Pregúntame lo que quieras...",
+        },
+      };
+
+      // ---------- Buddy catalog ----------
+      const BUDDIES = {
+        ada: {
+          name: { en: "Ada", es: "Ada" },
+          tagline: {
+            en: "Empathetic & inspiring",
+            es: "Empática e inspiradora",
+          },
+          img: "/assets/avatars/ada.png",
+        },
+        dino: {
+          name: { en: "Dino", es: "Dino" },
+          tagline: {
+            en: "Roarsome & brave explorer",
+            es: "Explorador valiente y rugidor",
+          },
+          img: "/assets/avatars/dino.png",
+        },
+        unicorn: {
+          name: { en: "Sparkle Unicorn", es: "Unicornio Brillo" },
+          tagline: { en: "Imagination power!", es: "¡Poder de imaginación!" },
+          img: "/assets/avatars/unicorn.png",
+        },
+        teddy: {
+          name: { en: "Honey Teddy", es: "Osito Miel" },
+          tagline: {
+            en: "Cozy, kind, and calm",
+            es: "Cariñoso, amable y tranquilo",
+          },
+          img: "/assets/avatars/teddy.png",
+        },
+        astronaut: {
+          name: { en: "Astro Nova", es: "Astro Nova" },
+          tagline: {
+            en: "Space-smart and curious",
+            es: "Inteligente del espacio y curioso",
+          },
+          img: "/assets/avatars/astronaut.png",
+        },
+        robot: {
+          name: { en: "Pixel Robot", es: "Robot Pixel" },
+          tagline: { en: "Logic + laughs", es: "Lógica + risas" },
+          img: "/assets/avatars/robot.png",
+        },
+        fox: {
+          name: { en: "Rainbow Fox", es: "Zorro Arcoíris" },
+          tagline: {
+            en: "Fast thinker, gentle coach",
+            es: "Pensador veloz, guía amable",
+          },
+          img: "/assets/avatars/fox.png",
+        },
+        panda: {
+          name: { en: "Forest Panda", es: "Panda del Bosque" },
+          tagline: { en: "Patient, encouraging", es: "Paciente y motivador" },
+          img: "/assets/avatars/panda.png",
+        },
+        dolphin: {
+          name: { en: "Ocean Dolphin", es: "Delfín del Océano" },
+          tagline: {
+            en: "Playful problem-solver",
+            es: "Resolutor de problemas juguetón",
+          },
+          img: "/assets/avatars/dolphin.png",
+        },
+      };
+
+      // ---------- Helpers ----------
+      const $ = (s, r = document) => r.querySelector(s);
+      const qs = new URLSearchParams(location.search);
+      const getLang = () =>
+        localStorage.getItem("ak_lang") || qs.get("language") || "en";
+      const setLang = (v) => localStorage.setItem("ak_lang", v);
+      const getAvatarKey = () =>
+        localStorage.getItem("ak_avatar") || qs.get("avatar") || "ada";
+      const getName = () =>
+        localStorage.getItem("ak_name") ||
+        qs.get("name") ||
+        (getLang() === "es" ? "Estudiante" : "Student");
+
+      // Fill UI text per language
+      function applyLangUI() {
+        const lang = getLang();
+        const t = I18N[lang] || I18N.en;
+
+        document.documentElement.lang = lang;
+        $("#langSelect").value = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          const val = t[key];
+          if (!val) return;
+          if (typeof val === "string") el.textContent = val;
+        });
+        $("#user-input").placeholder = t.placeholder;
+
+        // Tutor style label prefix
+        const prefix = t.tutor_style;
+        const buddy = currentBuddy();
+        $(
+          "#tutor-style"
+        ).innerHTML = `${prefix} <span id="buddy-name-inline">${buddy.name}</span> <span class="opacity-70">(<span id="buddy-tagline-inline">${buddy.tagline}</span>)</span>`;
+      }
+
+      function currentBuddy() {
+        const key = (getAvatarKey() || "ada").toLowerCase();
+        const lang = getLang();
+        const b = BUDDIES[key] || BUDDIES.ada;
+        return {
+          key,
+          name: b.name[lang] || b.name.en,
+          tagline: b.tagline[lang] || b.tagline.en,
+          img: b.img || "/assets/avatars/ada.png",
+        };
+      }
+
+      function hydrateBuddy() {
+        const lang = getLang();
+        const t = I18N[lang] || I18N.en;
+        const name = getName();
+        const buddy = currentBuddy();
+
+        // Greeting
+        $("#personal-greeting").textContent = t.greet(name, buddy.name);
+
+        // Inline “Tutor Style” (rebuilt again after applyLangUI)
+        $("#buddy-name-inline").textContent = buddy.name;
+        $("#buddy-tagline-inline").textContent = buddy.tagline;
+
+        // Right card
+        const imgEl = $("#avatar-image");
+        imgEl.src = buddy.img;
+        imgEl.alt = `${buddy.name} avatar`;
+        $("#avatar-label").textContent = buddy.name;
+        $("#avatar-persona").textContent = buddy.tagline;
+
+        // First message in chat (only if empty)
+        const log = $("#chat-log");
+        if (!log.hasChildNodes()) {
+          const bubble = document.createElement("div");
+          bubble.className = "bubble rounded-2xl px-4 py-3 inline-block";
+          bubble.id = "first-bot-msg";
+          bubble.textContent = t.first_msg(buddy.name);
+          log.appendChild(bubble);
+        }
+
+        // Keep language on change-buddy link
+        const link = $("#changeBuddyLink");
+        const url = new URL(link.getAttribute("href"), location.origin);
+        url.searchParams.set("language", lang);
+        link.setAttribute(
+          "href",
+          url.pathname + "?" + url.searchParams.toString()
+        );
+      }
+
+      // Init
+      const langSelect = $("#langSelect");
+      langSelect.addEventListener("change", (e) => {
+        setLang(e.target.value);
+        applyLangUI();
+        hydrateBuddy();
+      });
+
+      (function init() {
+        // Persist avatar/name if provided in URL
+        const urlAvatar = qs.get("avatar");
+        if (urlAvatar) localStorage.setItem("ak_avatar", urlAvatar);
+        const urlName = qs.get("name");
+        if (urlName) localStorage.setItem("ak_name", urlName);
+        const urlLang = qs.get("language");
+        if (urlLang) setLang(urlLang);
+
+        applyLangUI();
+        hydrateBuddy();
+      })();
+    </script>
+    <script>
+      /* --- Ada's Kids: Buddy Hydrator (runs last) --- */
+      (function () {
+        const qs = new URLSearchParams(location.search);
+
+        // i18n
+        const I18N = {
+          en: {
+            tutor_style: "Tutor Style:",
+            greet: (name, buddy) => `Hi ${name}, I’m ${buddy}.`,
+            first: (buddy) =>
+              `Hi! I’m ${buddy}. What would you like to learn today?`,
+            placeholder: "Ask me anything...",
+          },
+          es: {
+            tutor_style: "Estilo del tutor:",
+            greet: (name, buddy) => `Hola ${name}, soy ${buddy}.`,
+            first: (buddy) =>
+              `¡Hola! Soy ${buddy}. ¿Qué te gustaría aprender hoy?`,
+            placeholder: "Pregúntame lo que quieras...",
+          },
+        };
+
+        // Buddy catalog
+        const BUDDIES = {
+          ada: {
+            n: { en: "Ada", es: "Ada" },
+            t: { en: "Empathetic & inspiring", es: "Empática e inspiradora" },
+            img: "/assets/avatars/ada.png",
+          },
+          robot: {
+            n: { en: "Pixel Robot", es: "Robot Pixel" },
+            t: { en: "Logic + laughs", es: "Lógica + risas" },
+            img: "/assets/avatars/robot.png",
+          },
+          dino: {
+            n: { en: "Dino", es: "Dino" },
+            t: {
+              en: "Roarsome & brave explorer",
+              es: "Explorador valiente y rugidor",
+            },
+            img: "/assets/avatars/dino.png",
+          },
+          unicorn: {
+            n: { en: "Sparkle Unicorn", es: "Unicornio Brillo" },
+            t: { en: "Imagination power!", es: "¡Poder de imaginación!" },
+            img: "/assets/avatars/unicorn.png",
+          },
+          teddy: {
+            n: { en: "Honey Teddy", es: "Osito Miel" },
+            t: {
+              en: "Cozy, kind, and calm",
+              es: "Cariñoso, amable y tranquilo",
+            },
+            img: "/assets/avatars/teddy.png",
+          },
+          astronaut: {
+            n: { en: "Astro Nova", es: "Astro Nova" },
+            t: {
+              en: "Space-smart and curious",
+              es: "Inteligente del espacio y curioso",
+            },
+            img: "/assets/avatars/astronaut.png",
+          },
+          fox: {
+            n: { en: "Rainbow Fox", es: "Zorro Arcoíris" },
+            t: {
+              en: "Fast thinker, gentle coach",
+              es: "Pensador veloz, guía amable",
+            },
+            img: "/assets/avatars/fox.png",
+          },
+          panda: {
+            n: { en: "Forest Panda", es: "Panda del Bosque" },
+            t: { en: "Patient, encouraging", es: "Paciente y motivador" },
+            img: "/assets/avatars/panda.png",
+          },
+          dolphin: {
+            n: { en: "Ocean Dolphin", es: "Delfín del Océano" },
+            t: {
+              en: "Playful problem-solver",
+              es: "Resolutor de problemas juguetón",
+            },
+            img: "/assets/avatars/dolphin.png",
+          },
+        };
+
+        // Helpers
+        const $ = (s, r = document) => r.querySelector(s);
+        const setText = (el, text) => el && (el.textContent = text);
+        const setHTML = (el, html) => el && (el.innerHTML = html);
+        const setSrc = (el, src, alt) => {
+          if (el) {
+            el.src = src;
+            if (alt) el.alt = alt;
+          }
+        };
+
+        // Lang + identity
+        const lang = (
+          qs.get("language") ||
+          localStorage.getItem("ak_lang") ||
+          "en"
+        ).toLowerCase();
+        localStorage.setItem("ak_lang", lang);
+        const t = I18N[lang] || I18N.en;
+
+        // Avatar: URL param should override saved choice
+        const avFromQS = (qs.get("avatar") || "").toLowerCase();
+        const avFromLS = (
+          localStorage.getItem("ak_avatar") || ""
+        ).toLowerCase();
+        const avatarKey = avFromQS || avFromLS || "ada";
+        localStorage.setItem("ak_avatar", avatarKey);
+
+        const name =
+          qs.get("name") ||
+          localStorage.getItem("ak_name") ||
+          (lang === "es" ? "Estudiante" : "Student");
+
+        const buddyDef = BUDDIES[avatarKey] || BUDDIES.ada;
+        const buddyName = buddyDef.n[lang] || buddyDef.n.en;
+        const buddyTag = buddyDef.t[lang] || buddyDef.t.en;
+
+        function hydrate() {
+          // Greeting
+          setText($("#personal-greeting"), t.greet(name, buddyName));
+
+          // Placeholder
+          const input = $("#user-input");
+          if (input) input.placeholder = t.placeholder;
+
+          // Top tutor-style line (under title)
+          const ts = $("#tutor-style");
+          if (ts)
+            setHTML(
+              ts,
+              `${t.tutor_style} <strong>${buddyName}</strong> <span class="opacity-70">(${buddyTag})</span>`
+            );
+
+          // Right card (new markup)
+          setSrc($("#avatar-image"), buddyDef.img, `${buddyName} avatar`);
+          setText($("#avatar-label"), buddyName);
+          setText($("#avatar-persona"), buddyTag);
+
+          // Right card (legacy markup fallback)
+          setText(
+            document.querySelector('[data-role="avatar-name"]'),
+            buddyName
+          );
+          setText(
+            document.querySelector('[data-role="avatar-tagline"]'),
+            buddyTag
+          );
+          const legacyTS = document.querySelector(
+            '#avatar-card .tutor-style, [data-role="avatar-tutor-style"]'
+          );
+          if (legacyTS)
+            setHTML(legacyTS, `${t.tutor_style} ${buddyName} (${buddyTag})`);
+
+          // First bot bubble (only if log empty)
+          const log = $("#chat-log");
+          if (log && !$("#first-bot-msg")) {
+            const div = document.createElement("div");
+            div.id = "first-bot-msg";
+            div.className = "rounded-2xl px-4 py-3 inline-block";
+            div.style.background = "#eef2ff";
+            div.style.border = "1px solid #e2e8f0";
+            div.textContent = t.first(buddyName);
+            log.appendChild(div);
+          }
+
+          // Debug (optional)
+          console.log("[AdaHydrate] avatar:", avatarKey, "→", buddyName);
+        }
+
+        // Run LAST so it wins over other scripts
+        window.addEventListener("load", () => setTimeout(hydrate, 0));
+      })();
+    </script>
+  </body>
+</html>

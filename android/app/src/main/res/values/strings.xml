@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ada\'s Kids</string>
+    <string name="title_activity_main">Ada\'s Kids</string>
+    <string name="package_name">com.adaskids.app</string>
+    <string name="custom_url_scheme">com.adaskids.app</string>
+</resources>

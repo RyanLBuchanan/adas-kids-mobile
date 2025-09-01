@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ada's Kids — Joyful AI Tutoring</title>
+    <meta
+      name="description"
+      content="Ada's Kids makes learning joyful with a personalized AI tutor powered by the RAPID GROWTH model. Audio overviews, slides, storyboard, wizard, and a modern, accessible design."
+    />
+    <meta property="og:title" content="Ada's Kids — Joyful AI Tutoring" />
+    <meta
+      property="og:description"
+      content="Personalized AI tutoring with the RAPID GROWTH model."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/assets/favicon.ico" />
+
+    <!-- Tailwind v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      /* === ADA light/kid-friendly theme === */
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              /* primary (blue), secondary (lilac), neutral ink */
+              "app-primary": { 400: "#5BB0FF", 600: "#1B8AEE" },
+              "app-secondary": { 400: "#A794FF", 600: "#7A5CFF" },
+              ink: "#0F172A",
+            },
+            fontFamily: {
+              display: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+              body: ["Quicksand", "Segoe UI", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(20,20,50,.08)",
+              glass:
+                "0 10px 30px rgba(20,20,50,.08), inset 0 1px 0 rgba(255,255,255,.35)",
+            },
+            backgroundImage: {
+              kid: "radial-gradient(1200px 400px at 10% -10%, #fffbe7 10%, rgba(255,255,255,0) 60%), radial-gradient(900px 500px at 110% -20%, #e9f6ff 10%, rgba(255,255,255,0) 60%), linear-gradient(135deg, #ffffff 0%, #f7f8fb 100%)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Reveal on scroll */
+      .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Glass card */
+      .glass {
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      /* Light background */
+      .bg-hero {
+        background: radial-gradient(
+            1200px 400px at 10% -10%,
+            #fffbe7 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          radial-gradient(
+            900px 500px at 110% -20%,
+            #e9f6ff 10%,
+            rgba(255, 255, 255, 0) 60%
+          ),
+          linear-gradient(135deg, #ffffff 0%, #f7f8fb 100%);
+      }
+
+      /* Base text */
+      body {
+        color: #0f172a;
+      }
+      p,
+      li,
+      figcaption,
+      summary,
+      label {
+        color: inherit;
+      }
+
+      /* Audio mini-wave */
+      .ak-wave {
+        display: flex;
+        align-items: flex-end;
+        gap: 4px;
+        height: 18px;
+        color: #1b8aee;
+      }
+      .ak-wave .bar {
+        width: 3px;
+        height: 40%;
+        background: currentColor;
+        opacity: 0.35;
+        transform-origin: bottom;
+        animation: akwave 1s ease-in-out infinite;
+        animation-play-state: paused;
+        border-radius: 2px;
+      }
+      .ak-wave .bar:nth-child(2) {
+        height: 65%;
+        animation-delay: 0.1s;
+      }
+      .ak-wave .bar:nth-child(3) {
+        height: 90%;
+        animation-delay: 0.2s;
+      }
+      .ak-wave .bar:nth-child(4) {
+        height: 55%;
+        animation-delay: 0.3s;
+      }
+      .ak-wave .bar:nth-child(5) {
+        height: 75%;
+        animation-delay: 0.4s;
+      }
+      .ak-wave.playing .bar {
+        animation-play-state: running;
+        opacity: 0.95;
+      }
+      @keyframes akwave {
+        0%,
+        100% {
+          transform: scaleY(0.6);
+        }
+        50% {
+          transform: scaleY(1.2);
+        }
+      }
+
+      .focus-ring:focus {
+        outline: 3px solid #1b8aee;
+        outline-offset: 3px;
+        box-shadow: 0 0 0 4px rgba(27, 138, 238, 0.15);
+      }
+    </style>
+  </head>
+
+  <body class="font-body bg-hero">
+    <!-- Top bar -->
+    <header class="fixed top-0 inset-x-0 z-50">
+      <nav class="mx-auto max-w-7xl px-4">
+        <div
+          class="mt-3 mb-2 flex items-center justify-between rounded-2xl glass shadow-soft px-4 py-2 ring-1 ring-zinc-200"
+        >
+          <a href="#home" class="flex items-center gap-3">
+            <img
+              src="/assets/adas-kids-logo.png"
+              alt="Ada's Kids Logo"
+              class="h-9 w-9 rounded-xl"
+            />
+            <span class="font-display font-bold text-lg tracking-wide"
+              >Ada's Kids</span
+            >
+          </a>
+          <div class="hidden md:flex items-center gap-3 font-semibold">
+            <a
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              href="#vision"
+              data-i18n="nav_vision"
+              >Vision</a
+            >
+            <a
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              href="#rg"
+              data-i18n="nav_rg"
+              >RAPID GROWTH</a
+            >
+            <a
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              href="#testimonials"
+              data-i18n="nav_voices"
+              >Voices</a
+            >
+            <a
+              class="px-3 py-1 rounded-xl hover:bg-zinc-100"
+              href="#consulting"
+              data-i18n="nav_consulting"
+              >Consulting</a
+            >
+            <a
+              href="/cacc/"
+              class="ml-1 inline-flex items-center gap-2 rounded-full bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 px-4 py-2 shadow-soft"
+              aria-label="Open CACC workshop resources"
+              data-i18n="cta_cacc"
+              >CACC Workshop</a
+            >
+            <a
+              href="/saudi/index.html"
+              class="inline-flex items-center gap-2 rounded-full bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 px-4 py-2 shadow-soft"
+              >Saudi Vision 2030</a
+            >
+            <a
+              href="/login.html"
+              class="inline-flex items-center gap-2 rounded-full bg-app-primary-600 hover:bg-app-primary-400 text-white px-4 py-2 shadow-soft"
+              data-i18n="cta_talk_to_ada"
+              >Talk to Ada</a
+            >
+            <!-- Language -->
+            <select
+              id="langSelect"
+              class="ml-2 rounded-xl px-3 py-1 ring-1 ring-zinc-300 bg-white"
+              aria-label="Language"
+            >
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+          </div>
+          <button
+            id="menuBtn"
+            class="md:hidden text-2xl"
+            aria-label="Open menu"
+          >
+            ☰
+          </button>
+        </div>
+      </nav>
+
+      <!-- mobile -->
+      <div
+        id="mobileMenu"
+        class="md:hidden hidden mx-4 rounded-2xl glass shadow-soft px-4 py-3"
+      >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="#vision"
+          data-i18n="nav_vision"
+          >Vision</a
+        >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="#rg"
+          data-i18n="nav_rg"
+          >RAPID GROWTH</a
+        >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="#testimonials"
+          data-i18n="nav_voices"
+          >Voices</a
+        >
+        <a
+          class="block px-3 py-2 rounded-xl hover:bg-zinc-100"
+          href="#consulting"
+          data-i18n="nav_consulting"
+          >Consulting</a
+        >
+        <div class="flex items-center gap-2 pt-2">
+          <a
+            class="flex-1 px-3 py-2 rounded-xl bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 text-center"
+            href="/cacc/"
+            data-i18n="cta_cacc"
+            >CACC Workshop</a
+          >
+          <a
+            class="flex-1 px-3 py-2 rounded-xl bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 text-center"
+            href="/saudi/index.html"
+            >Saudi 2030</a
+          >
+        </div>
+        <a
+          class="block px-3 py-2 rounded-xl bg-app-secondary-600 hover:bg-app-secondary-400 text-white mt-2 text-center"
+          href="/login.html"
+          data-i18n="cta_talk_to_ada"
+          >Talk to Ada</a
+        >
+        <div class="mt-3 flex gap-2">
+          <select
+            id="langSelectMobile"
+            class="flex-1 rounded-xl px-3 py-2 ring-1 ring-zinc-300 bg-white"
+          >
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main id="home" class="pt-28">
+      <!-- HERO -->
+      <section class="reveal mx-auto max-w-7xl px-4 py-16 md:py-24">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1
+              class="font-display text-4xl md:text-5xl font-extrabold leading-tight tracking-tight"
+              data-i18n="hero_title"
+            >
+              Joyful learning, powered by
+              <span class="text-app-primary-600">Ada</span>
+            </h1>
+            <p class="mt-4 text-lg md:text-xl" data-i18n="hero_subtitle">
+              We make kids <strong>really happy</strong> about learning. Ada is
+              your future learning companion—cheerful, intuitive, and powered by
+              our RAPID GROWTH personalization model.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#rg"
+                class="inline-flex items-center gap-2 rounded-full bg-app-primary-600 hover:bg-app-primary-400 text-white px-5 py-3 shadow-soft"
+                data-i18n="cta_explore_rg"
+                >Explore RAPID GROWTH →</a
+              >
+              <a
+                href="/cacc/"
+                class="inline-flex items-center gap-2 rounded-full bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 px-5 py-3 shadow-soft"
+                data-i18n="cta_cacc"
+                >CACC Workshop</a
+              >
+              <a
+                href="/login.html"
+                class="inline-flex items-center gap-2 rounded-full bg-app-secondary-600 hover:bg-app-secondary-400 text-white px-5 py-3 shadow-soft"
+                data-i18n="cta_talk_to_ada"
+                >Talk to Ada</a
+              >
+            </div>
+            <div class="mt-10 grid grid-cols-3 gap-6 text-center">
+              <div
+                class="rounded-2xl bg-white p-4 shadow-glass ring-1 ring-zinc-200"
+              >
+                <div class="text-2xl">🎧</div>
+                <div class="mt-2 font-semibold" data-i18n="feature_audio">
+                  Audio Overviews
+                </div>
+              </div>
+              <div
+                class="rounded-2xl bg-white p-4 shadow-glass ring-1 ring-zinc-200"
+              >
+                <div class="text-2xl">🧠</div>
+                <div
+                  class="mt-2 font-semibold"
+                  data-i18n="feature_personalized"
+                >
+                  Personalized
+                </div>
+              </div>
+              <div
+                class="rounded-2xl bg-white p-4 shadow-glass ring-1 ring-zinc-200"
+              >
+                <div class="text-2xl">⚡</div>
+                <div
+                  class="mt-2 font-semibold"
+                  data-i18n="feature_fast_friendly"
+                >
+                  Fast &amp; Friendly
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="reveal md:justify-self-end">
+            <div
+              class="relative rounded-3xl overflow-hidden shadow-soft ring-1 ring-zinc-200 bg-white"
+            >
+              <img
+                src="/assets/AdasKids-Branding.png"
+                alt="Children learning joyfully with Ada's Kids"
+                class="w-full h-auto"
+              />
+              <div
+                class="absolute inset-x-4 bottom-4 flex items-center gap-3 rounded-2xl glass px-4 py-3 shadow-soft ring-1 ring-zinc-200"
+              >
+                <div class="text-2xl">▶️</div>
+                <p class="text-sm md:text-base" data-i18n="demo_callout">
+                  <strong>Demo:</strong> Watch how Ada guides a learner from
+                  curiosity to confidence.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUDIO + VISION -->
+      <section id="vision" class="reveal mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div class="text-center">
+          <h2
+            class="font-display text-3xl md:text-4xl font-bold"
+            data-i18n="hear_vision"
+          >
+            Hear the Vision
+          </h2>
+          <p class="mt-3 text-lg max-w-3xl mx-auto" data-i18n="vision_desc">
+            Ada's Kids is building a future where every learner has a mentor for
+            life—nurturing curiosity, confidence, and career discovery through
+            personalized AI companions.
+          </p>
+        </div>
+
+        <!-- YouTube Videos -->
+        <div class="mt-10 grid md:grid-cols-2 gap-8">
+          <figure
+            class="rounded-3xl overflow-hidden ring-1 ring-zinc-200 shadow-soft bg-white/80"
+          >
+            <div class="relative" style="padding-top: 56.25%">
+              <iframe
+                src="https://www.youtube.com/embed/gzve9wSLt_w?si=YVykF1jB8k4mgXx5"
+                title="Ada's Kids – An AI Tutor for Every Child"
+                class="absolute inset-0 w-full h-full"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <figcaption class="px-4 py-3 text-center text-sm">
+              📹 <strong>An AI Tutor for Every Child</strong>
+            </figcaption>
+          </figure>
+
+          <figure
+            class="rounded-3xl overflow-hidden ring-1 ring-zinc-200 shadow-soft bg-white/80"
+          >
+            <div class="relative" style="padding-top: 56.25%">
+              <iframe
+                src="https://www.youtube.com/embed/F0ZLkS5BM8c?si=edCWEvgnTnYixFB4"
+                title="The AI Tutor That Knows You – RAPID G.R.O.W.T.H."
+                class="absolute inset-0 w-full h-full"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <figcaption class="px-4 py-3 text-center text-sm">
+              📹
+              <strong>The AI Tutor That Knows You (RAPID G.R.O.W.T.H.)</strong>
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Audio Cards Row -->
+        <div class="mt-8 grid md:grid-cols-2 gap-6">
+          <!-- Vision Overview -->
+          <article
+            class="rounded-3xl glass p-6 shadow-soft ring-1 ring-zinc-200"
+          >
+            <header class="flex items-center justify-between gap-3 flex-wrap">
+              <h3 class="font-semibold text-xl" data-i18n="audio_vision_title">
+                🎧 Vision Overview
+              </h3>
+              <div class="flex items-center gap-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <span data-i18n="label_speed">Speed</span>
+                  <select
+                    id="visionRate"
+                    class="rounded-lg border border-zinc-300 bg-white px-2 py-1"
+                  >
+                    <option value="1">1×</option>
+                    <option value="1.25">1.25×</option>
+                    <option value="1.5">1.5×</option>
+                    <option value="2">2×</option>
+                  </select>
+                </div>
+                <a
+                  href="/audio/adaskids_description.wav"
+                  download
+                  class="rounded-full px-3 py-1 bg-ink text-white"
+                  data-i18n="label_download"
+                  >Download</a
+                >
+              </div>
+            </header>
+            <div class="mt-3 flex items-center gap-3">
+              <div
+                class="ak-wave"
+                data-wave-for="visionAudio"
+                aria-hidden="true"
+              >
+                <span class="bar"></span><span class="bar"></span
+                ><span class="bar"></span><span class="bar"></span
+                ><span class="bar"></span>
+              </div>
+              <audio id="visionAudio" class="w-full" controls preload="none">
+                <source
+                  src="/audio/adaskids_description.wav"
+                  type="audio/wav"
+                />
+              </audio>
+            </div>
+            <details class="mt-3 text-sm">
+              <summary class="cursor-pointer" data-i18n="label_transcript">
+                Transcript
+              </summary>
+              <div class="mt-2 leading-relaxed">
+                (Add your transcript text here for accessibility.)
+              </div>
+            </details>
+          </article>
+
+          <!-- RAPID GROWTH Overview -->
+          <article
+            class="rounded-3xl glass p-6 shadow-soft ring-1 ring-zinc-200"
+          >
+            <header class="flex items-center justify-between gap-3 flex-wrap">
+              <h3 class="font-semibold text-xl" data-i18n="audio_rg_title">
+                🎧 RAPID GROWTH Overview
+              </h3>
+              <div class="flex items-center gap-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <span data-i18n="label_speed">Speed</span>
+                  <select
+                    id="rgRate"
+                    class="rounded-lg border border-zinc-300 bg-white px-2 py-1"
+                  >
+                    <option value="1">1×</option>
+                    <option value="1.25">1.25×</option>
+                    <option value="1.5">1.5×</option>
+                    <option value="2">2×</option>
+                    <option value="2.5">2.5×</option>
+                  </select>
+                </div>
+                <a
+                  href="/audio/rapid_growth_overview.mp3"
+                  download
+                  class="rounded-full px-3 py-1 bg-ink text-white"
+                  data-i18n="label_download"
+                  >Download</a
+                >
+              </div>
+            </header>
+            <div class="mt-3 flex items-center gap-3">
+              <div class="ak-wave" data-wave-for="rgAudio" aria-hidden="true">
+                <span class="bar"></span><span class="bar"></span
+                ><span class="bar"></span><span class="bar"></span
+                ><span class="bar"></span>
+              </div>
+              <audio id="rgAudio" class="w-full" controls preload="none">
+                <source
+                  src="/audio/rapid_growth_overview.wav"
+                  type="audio/wav"
+                />
+                <source
+                  src="/audio/rapid_growth_overview.mp3"
+                  type="audio/mpeg"
+                />
+              </audio>
+            </div>
+            <details class="mt-3 text-sm">
+              <summary class="cursor-pointer" data-i18n="label_transcript">
+                Transcript
+              </summary>
+              <div class="mt-2 leading-relaxed">
+                (Add your transcript text here for accessibility.)
+              </div>
+            </details>
+          </article>
+        </div>
+
+        <!-- Storyboard Grid (under Hear the Vision) -->
+        <div class="reveal mt-12">
+          <h3 class="font-display text-2xl font-bold text-center">
+            Storyboard of Coming Demo
+          </h3>
+          <p class="mt-2 text-center">
+            Follow the journey of a young learner discovering the joy of
+            knowledge with Ada’s Kids.
+          </p>
+          <div
+            class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          >
+            <figure
+              class="rounded-2xl overflow-hidden shadow-soft ring-1 ring-zinc-200 bg-white/80"
+            >
+              <img
+                src="/assets/storyboard/scene1.png"
+                alt="Curiosity Ignites"
+                class="w-full h-auto"
+              />
+              <figcaption class="px-4 py-3 text-center text-sm">
+                Curiosity Ignites
+              </figcaption>
+            </figure>
+            <figure
+              class="rounded-2xl overflow-hidden shadow-soft ring-1 ring-zinc-200 bg-white/80"
+            >
+              <img
+                src="/assets/storyboard/scene2.png"
+                alt="Learning With Joy"
+                class="w-full h-auto"
+              />
+              <figcaption class="px-4 py-3 text-center text-sm">
+                Learning With Joy
+              </figcaption>
+            </figure>
+            <figure
+              class="rounded-2xl overflow-hidden shadow-soft ring-1 ring-zinc-200 bg-white/80"
+            >
+              <img
+                src="/assets/storyboard/scene3.png"
+                alt="Confidence Unlocked"
+                class="w-full h-auto"
+              />
+              <figcaption class="px-4 py-3 text-center text-sm">
+                Confidence Unlocked
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- Slides embed -->
+        <div class="reveal mt-12">
+          <h3 class="font-display text-2xl font-bold text-center">
+            Slide Deck
+          </h3>
+          <p class="mt-2 text-center">
+            Scroll inside the frame to view the full deck.
+          </p>
+          <div
+            class="mt-4 relative overflow-hidden rounded-3xl ring-1 ring-zinc-200 shadow-soft"
+            style="padding-top: 56.25%"
+          >
+            <iframe
+              src="https://adas-kids-rapid-growth-p-lps7wqv.gamma.site/"
+              title="RAPID GROWTH Slides"
+              class="absolute inset-0 w-full h-full"
+              frameborder="0"
+              allow="fullscreen"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- RAPID GROWTH GRID -->
+      <section id="rg" class="reveal mx-auto max-w-7xl px-4 py-12 md:py-20">
+        <div class="text-center max-w-3xl mx-auto">
+          <h2 class="font-display text-3xl md:text-4xl font-bold">
+            RAPID GROWTH Model
+          </h2>
+          <p class="mt-3 text-lg">
+            Eleven inputs that help Ada tune difficulty, tone, and pacing—so
+            every learner feels seen.
+          </p>
+        </div>
+        <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">R — Resume & Academic History</h4>
+            <p class="mt-1 text-sm">
+              Background, strengths, gaps → skill vectors & adaptive pacing from
+              day one.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">A — Avatar Photo & Sentiment Baseline</h4>
+            <p class="mt-1 text-sm">
+              Mood trends so tone matches emotion in real time.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">P — Learning Preferences</h4>
+            <p class="mt-1 text-sm">
+              Visual, auditory, hands-on, solo/collab → right format beyond
+              text.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">I — Interests & Hobbies</h4>
+            <p class="mt-1 text-sm">
+              Motivation hooks (dinosaurs, Star Trek) for sticky analogies.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">D — Difficult Subjects</h4>
+            <p class="mt-1 text-sm">
+              Confidence ratings direct scaffolding and practice.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">G — Goals & Milestones</h4>
+            <p class="mt-1 text-sm">
+              Backward-chains from dream goals to today’s plan.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">R² — Routine & Availability</h4>
+            <p class="mt-1 text-sm">
+              Preferred time blocks → timely nudges & spaced review.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">O — Obstacles / Accommodations</h4>
+            <p class="mt-1 text-sm">
+              ADHD, dyslexia, bandwidth → UI and pacing adapt.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">W — Well-Being Pulse</h4>
+            <p class="mt-1 text-sm">
+              5-item check-ins adjust challenge and encouragement.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">T — Tech Comfort & Tools</h4>
+            <p class="mt-1 text-sm">
+              Device readiness unlocks immersive features.
+            </p>
+          </div>
+          <div class="rounded-2xl glass p-5 shadow-soft ring-1 ring-zinc-200">
+            <h4 class="font-semibold">H — Historical Performance Data</h4>
+            <p class="mt-1 text-sm">
+              Grades & scores cold-start the right level.
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Personalization Wizard (accordion) -->
+        <section id="rg-wizard" class="reveal mt-12 mx-auto max-w-4xl">
+          <details
+            class="rounded-3xl glass p-6 shadow-soft ring-1 ring-zinc-200"
+          >
+            <summary
+              class="font-display text-xl md:text-2xl font-bold cursor-pointer"
+            >
+              ⚙️ Quick Personalization Wizard (R.A.P.I.D. G.R.O.W.T.H.)
+            </summary>
+            <p class="mt-2">
+              Fill what you like. Your answers save to your browser only.
+            </p>
+
+            <div class="mt-4 space-y-6" id="wizardFields">
+              <!-- R -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">R — Resume & Academic History</h4>
+                <textarea
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  rows="3"
+                  placeholder="Degrees, courses, strengths, gaps"
+                  data-key="resume"
+                ></textarea>
+              </div>
+              <!-- A -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">A — Avatar & Sentiment</h4>
+                <div class="mt-2 flex flex-wrap gap-3 items-center">
+                  <label class="inline-flex items-center gap-2"
+                    ><input
+                      type="radio"
+                      name="mood"
+                      value="happy"
+                      data-key="mood"
+                    />
+                    <span>Happy</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input
+                      type="radio"
+                      name="mood"
+                      value="neutral"
+                      data-key="mood"
+                    />
+                    <span>Neutral</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input
+                      type="radio"
+                      name="mood"
+                      value="anxious"
+                      data-key="mood"
+                    />
+                    <span>Anxious</span></label
+                  >
+                </div>
+              </div>
+              <!-- P -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">P — Learning Preferences</h4>
+                <div class="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <label class="inline-flex items-center gap-2"
+                    ><input type="checkbox" value="visual" data-key="prefs" />
+                    <span>Visual</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input type="checkbox" value="auditory" data-key="prefs" />
+                    <span>Auditory</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input
+                      type="checkbox"
+                      value="kinesthetic"
+                      data-key="prefs"
+                    />
+                    <span>Hands-on</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input type="checkbox" value="solo" data-key="prefs" />
+                    <span>Solo</span></label
+                  >
+                  <label class="inline-flex items-center gap-2"
+                    ><input type="checkbox" value="collab" data-key="prefs" />
+                    <span>Collaborative</span></label
+                  >
+                </div>
+              </div>
+              <!-- I -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">I — Interests & Hobbies</h4>
+                <input
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  placeholder="e.g., Star Trek, dinosaurs"
+                  data-key="interests"
+                />
+              </div>
+              <!-- D -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">D — Difficult Subjects</h4>
+                <input
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  placeholder="Where do you struggle?"
+                  data-key="difficulties"
+                />
+              </div>
+              <!-- G -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">G — Goals & Milestones</h4>
+                <textarea
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  rows="2"
+                  placeholder="Short-term and long-term"
+                  data-key="goals"
+                ></textarea>
+              </div>
+              <!-- R2 -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">R² — Routine & Availability</h4>
+                <input
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  placeholder="Preferred study times"
+                  data-key="routine"
+                />
+              </div>
+              <!-- O -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">O — Obstacles / Accommodations</h4>
+                <input
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  placeholder="e.g., dyslexia, low bandwidth"
+                  data-key="accommodations"
+                />
+              </div>
+              <!-- W -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">W — Well-Being Pulse</h4>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value="3"
+                  class="mt-2 w-full"
+                  data-key="wellbeing"
+                />
+                <div class="text-sm opacity-80">
+                  1 = low energy • 5 = thriving
+                </div>
+              </div>
+              <!-- T -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">T — Tech Comfort & Tools</h4>
+                <input
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  placeholder="Devices, OS, comfort level"
+                  data-key="tech"
+                />
+              </div>
+              <!-- H -->
+              <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200">
+                <h4 class="font-semibold">H — Historical Performance Data</h4>
+                <textarea
+                  class="mt-2 w-full rounded-xl border border-zinc-300 bg-white p-3"
+                  rows="2"
+                  placeholder="Grades, scores, prior learning"
+                  data-key="history"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <button
+                id="saveProfile"
+                class="inline-flex items-center gap-2 rounded-full bg-app-primary-600 hover:bg-app-primary-400 text-white px-5 py-3 shadow-soft"
+              >
+                Save to Browser
+              </button>
+              <button
+                id="previewProfile"
+                class="inline-flex items-center gap-2 rounded-full bg-ink hover:opacity-90 text-white px-5 py-3 shadow-soft"
+              >
+                Preview JSON
+              </button>
+              <button
+                id="copyProfile"
+                class="inline-flex items-center gap-2 rounded-full bg-app-secondary-600 hover:bg-app-secondary-400 text-white px-5 py-3 shadow-soft"
+              >
+                Copy JSON
+              </button>
+              <button
+                id="resetProfile"
+                class="inline-flex items-center gap-2 rounded-full bg-white ring-1 ring-zinc-300 hover:bg-zinc-50 px-5 py-3 shadow-soft"
+              >
+                Reset
+              </button>
+            </div>
+            <pre
+              id="profilePreview"
+              class="mt-4 hidden overflow-x-auto rounded-2xl bg-zinc-900 text-zinc-100 p-4 text-xs"
+            ></pre>
+          </details>
+        </section>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section
+        id="testimonials"
+        class="reveal mx-auto max-w-6xl px-4 py-12 md:py-20"
+      >
+        <div class="text-center">
+          <h2 class="font-display text-3xl md:text-4xl font-bold">
+            What People Are Saying
+          </h2>
+          <p class="mt-3 text-lg">
+            Real voices, real impact—how Ada’s Kids changes the vibe around
+            learning.
+          </p>
+        </div>
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+          <figure
+            class="rounded-3xl glass p-6 shadow-soft text-center ring-1 ring-zinc-200"
+          >
+            <img
+              src="/assets/images/testimonial1.png"
+              alt="Happy Parent"
+              class="w-16 h-16 mx-auto rounded-full border-2 border-amber-300"
+            />
+            <blockquote class="mt-3 italic">
+              “Ada’s Kids helped my daughter fall in love with learning again.”
+            </blockquote>
+            <figcaption class="mt-2 text-sm opacity-70">
+              — A Happy Parent
+            </figcaption>
+          </figure>
+          <figure
+            class="rounded-3xl glass p-6 shadow-soft text-center ring-1 ring-zinc-200"
+          >
+            <img
+              src="/assets/images/testimonial2.png"
+              alt="Young Student"
+              class="w-16 h-16 mx-auto rounded-full border-2 border-amber-300"
+            />
+            <blockquote class="mt-3 italic">
+              “Now I look forward to learning every day!”
+            </blockquote>
+            <figcaption class="mt-2 text-sm opacity-70">
+              — A Young Learner
+            </figcaption>
+          </figure>
+          <figure
+            class="rounded-3xl glass p-6 shadow-soft text-center ring-1 ring-zinc-200"
+          >
+            <img
+              src="/assets/images/testimonial3.png"
+              alt="Grateful Student"
+              class="w-16 h-16 mx-auto rounded-full border-2 border-amber-300"
+            />
+            <blockquote class="mt-3 italic">
+              “It’s fun and I feel more confident.”
+            </blockquote>
+            <figcaption class="mt-2 text-sm opacity-70">
+              — A Grateful Student
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- STAY IN THE LOOP (Google Form) -->
+      <section id="stay-in-loop" class="reveal mx-auto max-w-3xl px-4 pb-20">
+        <div class="rounded-3xl glass p-6 shadow-soft ring-1 ring-zinc-200">
+          <h3
+            class="font-display text-2xl font-bold text-center text-app-secondary-600"
+          >
+            ✨ Stay in the Loop
+          </h3>
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSd6v2WiTEtaXBpbWyYTTzuP0B-mBRTVF5IC2fpsk5tZqi_U6Q/viewform?embedded=true"
+            width="100%"
+            height="640"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            class="mt-4 rounded-2xl ring-1 ring-zinc-200"
+            >Loading…</iframe
+          >
+        </div>
+      </section>
+
+      <!-- CONSULTING -->
+      <section id="consulting" class="reveal mx-auto max-w-5xl px-4 pb-24">
+        <div class="grid md:grid-cols-3 gap-8 items-start">
+          <div class="md:col-span-2">
+            <h3 class="font-display text-3xl font-bold">
+              Prompt Engineering Consulting
+            </h3>
+            <p class="mt-3">
+              Need help designing effective AI interactions? Ryan Buchanan
+              offers expert consulting in prompt design, conversational AI, and
+              EdTech applications of large language models.
+            </p>
+            <ul class="mt-4 list-disc list-inside">
+              <li>Prompt tuning and LLM optimization</li>
+              <li>Use-case design and workflow strategy</li>
+              <li>Educational prompt frameworks</li>
+              <li>Voice & personality design for AI tutors</li>
+            </ul>
+            <a
+              href="mailto:ryan@adaskids.ai"
+              class="mt-6 inline-flex items-center gap-2 rounded-full bg-app-secondary-600 hover:bg-app-secondary-400 text-white px-6 py-3 shadow-soft"
+              >Email ryan@adaskids.ai</a
+            >
+          </div>
+          <aside
+            class="rounded-3xl glass p-6 shadow-soft text-center ring-1 ring-zinc-200"
+          >
+            <img
+              src="/assets/headshot-happy.jpg"
+              alt="Ryan Buchanan"
+              class="w-32 h-32 mx-auto rounded-full border-4 border-blue-200 shadow-soft"
+            />
+            <p class="mt-3">
+              Hi, I’m Ryan — educator, builder, and believer in joyful learning.
+            </p>
+            <p class="mt-2 text-sm opacity-90">
+              15+ years teaching & instructional design across the globe. M.Ed.,
+              Data Analytics, MBA. Building Ada’s Kids to bring delight back to
+              learning.
+            </p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="reveal border-t border-zinc-200 bg-white/80">
+      <div class="mx-auto max-w-7xl px-4 py-10 text-center text-sm">
+        <p>&copy; 2025 Ada's Kids. Made with love and imagination.</p>
+        <p class="italic opacity-90 mt-1">
+          “Every child deserves a teacher who never gets tired of their
+          questions.”
+        </p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // mobile menu
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      menuBtn?.addEventListener("click", () =>
+        mobileMenu.classList.toggle("hidden")
+      );
+
+      // i18n (EN/ES only)
+      const dict = {
+        en: {
+          nav_vision: "Vision",
+          nav_rg: "RAPID GROWTH",
+          nav_voices: "Voices",
+          nav_consulting: "Consulting",
+
+          hero_title:
+            'Joyful learning, powered by <span class="text-app-primary-600">Ada</span>',
+          hero_subtitle:
+            "We make kids <strong>really happy</strong> about learning. Ada is your future learning companion—cheerful, intuitive, and powered by our RAPID GROWTH personalization model.",
+
+          cta_explore_rg: "Explore RAPID GROWTH →",
+          cta_cacc: "CACC Workshop",
+          cta_talk_to_ada: "Talk to Ada",
+
+          feature_audio: "Audio Overviews",
+          feature_personalized: "Personalized",
+          feature_fast_friendly: "Fast &amp; Friendly",
+
+          demo_callout:
+            "<strong>Demo:</strong> Watch how Ada guides a learner from curiosity to confidence.",
+
+          hear_vision: "Hear the Vision",
+          vision_desc:
+            "Ada's Kids is building a future where every learner has a mentor for life—nurturing curiosity, confidence, and career discovery through personalized AI companions.",
+
+          audio_vision_title: "🎧 Vision Overview",
+          audio_rg_title: "🎧 RAPID GROWTH Overview",
+          label_speed: "Speed",
+          label_download: "Download",
+          label_transcript: "Transcript",
+        },
+        es: {
+          nav_vision: "Visión",
+          nav_rg: "RAPID GROWTH",
+          nav_voices: "Voces",
+          nav_consulting: "Consultoría",
+
+          hero_title:
+            'Aprendizaje feliz, potenciado por <span class="text-app-primary-600">Ada</span>',
+          hero_subtitle:
+            "Hacemos que los niños estén <strong>muy felices</strong> aprendiendo. Ada es tu compañera de aprendizaje—alegre, intuitiva y guiada por nuestro modelo RAPID GROWTH.",
+
+          cta_explore_rg: "Explorar RAPID GROWTH →",
+          cta_cacc: "Taller CACC",
+          cta_talk_to_ada: "Hablar con Ada",
+
+          feature_audio: "Resúmenes de audio",
+          feature_personalized: "Personalizado",
+          feature_fast_friendly: "Rápido y amigable",
+
+          demo_callout:
+            "<strong>Demo:</strong> Mira cómo Ada guía a un estudiante de la curiosidad a la confianza.",
+
+          hear_vision: "Escucha la Visión",
+          vision_desc:
+            "Ada's Kids construye un futuro donde cada estudiante tiene una mentora de por vida—nutriendo la curiosidad, la confianza y el descubrimiento profesional.",
+
+          audio_vision_title: "🎧 Resumen de la Visión",
+          audio_rg_title: "🎧 Resumen de RAPID GROWTH",
+          label_speed: "Velocidad",
+          label_download: "Descargar",
+          label_transcript: "Transcripción",
+        },
+      };
+
+      function applyLang(lang) {
+        const strings = dict[lang] || dict.en;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (strings[key]) el.innerHTML = strings[key];
+        });
+        localStorage.setItem("ak_lang", lang);
+      }
+
+      const langSelect = document.getElementById("langSelect");
+      const langSelectMobile = document.getElementById("langSelectMobile");
+      const savedLang =
+        (["en", "es"].includes(localStorage.getItem("ak_lang"))
+          ? localStorage.getItem("ak_lang")
+          : "en") || "en";
+      if (langSelect) langSelect.value = savedLang;
+      if (langSelectMobile) langSelectMobile.value = savedLang;
+      applyLang(savedLang);
+      langSelect?.addEventListener("change", (e) => {
+        applyLang(e.target.value);
+        if (langSelectMobile) langSelectMobile.value = e.target.value;
+      });
+      langSelectMobile?.addEventListener("change", (e) => {
+        applyLang(e.target.value);
+        if (langSelect) langSelect.value = e.target.value;
+      });
+
+      // audio speed controls + mini-wave + analytics
+      function bindAudio(rateSelId, audioId) {
+        const sel = document.getElementById(rateSelId);
+        const aud = document.getElementById(audioId);
+        const wave = document.querySelector(`[data-wave-for="${audioId}"]`);
+        if (!sel || !aud) return;
+        const key = `ak_rate_${audioId}`;
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          sel.value = saved;
+          aud.playbackRate = parseFloat(saved);
+        }
+        sel.addEventListener("change", () => {
+          const r = parseFloat(sel.value);
+          aud.playbackRate = r;
+          localStorage.setItem(key, r);
+        });
+
+        function logEvent(type) {
+          const payload = {
+            type,
+            audioId,
+            ts: Date.now(),
+            rate: aud.playbackRate,
+          };
+          try {
+            navigator.sendBeacon &&
+              navigator.sendBeacon(
+                "/analytics",
+                new Blob([JSON.stringify(payload)], {
+                  type: "application/json",
+                })
+              );
+          } catch {}
+          console.log("ak-analytics", payload);
+        }
+        aud.addEventListener("play", () => {
+          wave?.classList.add("playing");
+          logEvent("play");
+        });
+        aud.addEventListener("pause", () => {
+          wave?.classList.remove("playing");
+          logEvent("pause");
+        });
+        aud.addEventListener("ended", () => {
+          wave?.classList.remove("playing");
+          logEvent("ended");
+        });
+      }
+      bindAudio("visionRate", "visionAudio");
+      bindAudio("rgRate", "rgAudio");
+
+      // wizard data handling
+      const state = JSON.parse(localStorage.getItem("ak_profile") || "{}");
+      document.querySelectorAll("[data-key]").forEach((el) => {
+        const key = el.getAttribute("data-key");
+        if (el.type === "checkbox") {
+          const arr = state[key] || [];
+          if (Array.isArray(arr) && arr.includes(el.value)) el.checked = true;
+        } else if (el.type === "radio") {
+          if (state[key] === el.value) el.checked = true;
+        } else if (state[key] != null) {
+          el.value = state[key];
+        }
+        const ev =
+          el.tagName === "INPUT" || el.tagName === "TEXTAREA"
+            ? "input"
+            : "change";
+        el.addEventListener(ev, () => {
+          if (el.type === "checkbox") {
+            const old = state[key] || [];
+            if (el.checked) {
+              if (!old.includes(el.value)) old.push(el.value);
+            } else {
+              const i = old.indexOf(el.value);
+              if (i > -1) old.splice(i, 1);
+            }
+            state[key] = old;
+          } else if (el.type === "radio") {
+            state[key] = el.value;
+          } else {
+            state[key] = el.value;
+          }
+        });
+      });
+
+      document.getElementById("saveProfile")?.addEventListener("click", () => {
+        localStorage.setItem("ak_profile", JSON.stringify(state));
+        alert("Saved locally.");
+      });
+      document
+        .getElementById("previewProfile")
+        ?.addEventListener("click", () => {
+          const pre = document.getElementById("profilePreview");
+          pre.textContent = JSON.stringify(state, null, 2);
+          pre.classList.remove("hidden");
+        });
+      document
+        .getElementById("copyProfile")
+        ?.addEventListener("click", async () => {
+          const text = JSON.stringify(state, null, 2);
+          try {
+            await navigator.clipboard.writeText(text);
+            alert("Copied JSON to clipboard.");
+          } catch {
+            alert("Copy failed.");
+          }
+        });
+      document.getElementById("resetProfile")?.addEventListener("click", () => {
+        localStorage.removeItem("ak_profile");
+        location.reload();
+      });
+
+      // simple reveal-on-scroll
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("is-visible");
+          });
+        },
+        { threshold: 0.12 }
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

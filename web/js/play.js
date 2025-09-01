@@ -20,7 +20,7 @@ const AK_API_BASE = IS_NATIVE
   : "";
 
 // ===== 0) Small i18n helper (EN/ES) =====
-function getLang() {
+function akGetLang() {
   const lang = new URLSearchParams(window.location.search).get("language");
   return (lang || "en").toLowerCase().startsWith("es") ? "es" : "en";
 }
@@ -62,7 +62,7 @@ const L = {
     explainBubble: "Explícalo como si tuviera 10",
   },
 };
-const T = L[getLang()];
+const T = L[akGetLang()];
 
 // ===== 1) Track last AI + last user for helpers & TTS =====
 let lastResponse = "";
